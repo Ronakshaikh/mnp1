@@ -1,0 +1,33 @@
+// Read the image
+img = imread('C:\Users\malvi\Downloads\lena.png');
+
+// Convert the image to grayscale
+gray = rgb2gray(img);
+
+// Convert gray to a double-precision floating-point matrix
+gray = double(gray);
+
+// Display the value of gray
+mprintf('gray = %f\n', gray);
+
+// Define the constant c
+c = 255 / log10(1 + max(gray));
+
+// Apply the log transformation
+log_image = c * log10(1 + gray);
+
+// Normalize the output image
+log_image = uint8(log_image);
+
+// Save the output image
+imwrite(log_image, 'C:\Users\malvi\Downloads\lena_log.png');
+
+// Display the original and transformed images in the same window
+f = scf();
+f.figure_size = [800, 400];
+subplot(1, 2, 1);
+imshow(uint8(gray));
+xtitle('Original Image');
+subplot(1, 2, 2);
+imshow(log_image);
+xtitle('Log Transformed Image');

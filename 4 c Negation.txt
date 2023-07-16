@@ -1,0 +1,9 @@
+a=imread('C:\Users\malvi\Downloads\cameraman.png');
+[m,n]=size(a);
+for i=1:m
+for j=1:n
+b(i,j)=255 - a(i,j);
+end
+end
+subplot(1,2,1),imshow(a),title('Original');
+subplot(1,2,2),imshow(b),title('Negation');

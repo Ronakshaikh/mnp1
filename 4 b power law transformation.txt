@@ -1,0 +1,28 @@
+// Read the image
+img = imread('C:\Users\malvi\Downloads\lena.png');
+
+// Convert the image to grayscale
+gray = rgb2gray(img);
+
+// Convert gray to a double-precision floating-point matrix
+gray = double(gray);
+
+// Define the constant c and gamma value
+c = 1;
+gamma_values = [0.1, 0.5, 1.5, 2.5,3.0,3.5];
+power_law_images = [];
+for i = 1:length(gamma_values)
+    gamma = gamma_values(i);
+    power_law_image = c * gray.^gamma;
+    power_law_image = uint8(power_law_image * 255 / max(power_law_image));
+    power_law_images = [power_law_images, power_law_image];
+end
+// Display the original and transformed images in the same window
+f = scf();
+f.figure_size = [800, 400];
+subplot(1, 2, 1);
+imshow(uint8(gray));
+xtitle('Original Image');
+subplot(1, 2, 2);
+imshow(power_law_images(:,:,1));
+xtitle('Power-Law Transformed Image of values [0.1, 0.5, 1.5, 2.5,3.0,3.5]');

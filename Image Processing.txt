@@ -1,0 +1,235 @@
+Practical 1A
+clc;  
+close; 
+m=4; 
+n=6; 
+N=400; 
+N2=2*N; 
+Fs=m*N2*n*N2;  
+disp('Number of samples required to preserve the informationin the image = ',Fs); 
+
+
+
+Practical 1B
+clear all; 
+n = input ('Enter the input sample'); 
+img=imread("C:\Users\MLAB-07\Desktop\flower.jpg"); 
+a=size(img); 
+w=a(2); 
+h=a(1); 
+im=zeros(100); 
+for i=1:n:h 
+for j=1:n:w 
+for k=0:n-1 
+for l=0:n-1 
+im(i+k,j+l)=img(i,j);  
+end 
+end 
+end 
+end 
+subplot(1,2,1); 
+imshow(uint8(img));
+title('original image'); 
+subplot(1,2,2); 
+imshow(uint8(img));
+title('sampled image'); 
+
+
+Practical 2
+QUANTIZATION 
+a=imread('C:\Users\MLAB-07\Desktop\flower.tif');
+[m,n]=size(a);
+for i=1:m
+for j=1:n
+b(i,j)=(a(i,j))/255*63;
+c(i,j)=(a(i,j))/255*127;
+d(i,j)=(a(i,j))/255*191;
+end
+end
+subplot(2,2,1);
+imshow(a);
+title('Original');
+subplot(2,2,2);
+imshow(b);
+title('Quantized63');
+subplot(2,2,3);
+imshow(c);
+title('Quantized127');
+subplot(2,2,4);
+imshow(d);
+title('Quantized191');
+
+ 
+SPATIAL RESOLUTION 
+i=imread('C:\Users\MLAB-07\Desktop\flower.tif');
+a=imresize(i,0.8);
+b=imresize(i,0.6);
+c=imresize(i,0.4);
+subplot(2,2,1);
+imshow(i);
+title('Original');
+subplot(2,2,2);
+imshow(a);
+title('0.8');
+subplot(2,2,3);
+imshow(c);
+title('0.6');
+subplot(2,2,4);
+imshow(c);
+title('0.4');
+
+Practical 3
+A.THRESHOLDING
+clc; 
+clear all; 
+a=imread("C:\Users\MLAB-07\Desktop\flower.jpg"); 
+b=double(a) 
+subplot(1,2,1); 
+imshow(a); 
+title('original img'); 
+t=100; 
+[m,n]=size(b); 
+for i=1:m 
+for j=1:n 
+if (b(i,j)<t) 
+    c(i,j)=0; 
+else 
+    c(i,j)=255;    
+end 
+end 
+end 
+subplot(1,2,2); 
+imshow(c); 
+title('threshold img');
+
+
+B.
+CONTRAST ADJUSTMENT
+a=imread('C:\Users\MLAB-07\Desktop\bts.tif'); 
+r1=100; 
+r2=140; 
+s1=150; 
+s2=240; 
+l=s1/r1;  
+m=(s2-s1)/(r2-r1); 
+n=(255-s2)/(255-r2); 
+s=size(a); 
+for i=1:s(1) 
+for j=1:s(2) 
+if ((a(i,j) > 0) && (a(i,j) < r1)) 
+b(i,j)=a(i,j)*l; 
+end 
+if ((a(i,j)> r1)&&(a(i,j)<r2)) 
+b(i,j) = (m*(a(i,j)-120))+s1; 
+end 
+if((a(i,j)> r2)&&(a(i,j)<256)) 
+b(i,j) = (n*(a(i,j)-150))+s2; 
+end 
+end 
+end 
+subplot(1,2,1);
+imshow(a);
+title('Original Image'); 
+subplot(1,2,2);
+imshow(b);
+title('Contrast Image'); 
+
+C.BRIGHTNESS ADJUSTMENT
+a=imread('C:\Users\MLAB-07\Desktop\bts.tif'); 
+[m,n]=size(a); 
+for i=1:m 
+for j=1:n 
+b(i,j)=a(i,j)-50;  
+c(i,j)=a(i,j)-100; 
+d(i,j)=a(i,j)+50; 
+end 
+end 
+subplot(2,2,1);
+imshow(a);
+title('Original'); 
+subplot(2,2,2);
+imshow(b);
+title('ReducedBy50'); 
+subplot(2,2,3);
+imshow(c);
+title('ReducedBy100'); 
+subplot(2,2,4);
+imshow(d);
+title('IncreaseBy50'); 
+
+D.GRAY LEVEL SLICING:-
+a=imread('C:\Users\MLAB-07\Downloads\nasera.tif'); 
+[m,n]=size(a); 
+min =100; 
+max= 200; 
+for i=1:m 
+for j=1:n
+x=a(i,j); 
+if x > min && x < max 
+    b(i,j)=a(i,j); 
+elseif x > max 
+    b(i,j)=255; 
+else 
+    b(i,j)=0; 
+end 
+end 
+end 
+subplot(1,2,1);
+imshow(a);
+title('Original'); 
+subplot(1,2,2);
+imshow(b);
+title('GraySlicing');
+
+
+Practical 6
+Write a program to apply Gaussian filter on an image
+m=input('Enter the Size '); 
+s=input('Enter the value of sigma '); 
+sum1=0; 
+a=m/2; 
+p=0;q=0; 
+r=1; 
+t=1; 
+w=floor(a); 
+for i=-w:w 
+    for j=-w:w 
+        p=i*i; 
+        q=j*j; 
+        g(r,t)=exp(-(p+q)/(2*s*s)); 
+        sum1=sum(sum(g(r,t)+sum1));  
+        t=t+1; 
+    end 
+    t=1; 
+    r=r+1;  
+end  
+for r=1:m 
+    for t=1:m 
+        h(r,t)=g(r,t)/sum1;
+        t=t+1; 
+    end
+    t=1; 
+    r=r+1; 
+end 
+img=imread('C:\Users\MLAB-07\Desktop\bts.tif'); 
+p=double(img);  
+s1=0;  
+[M N]=size(p); 
+for x=0:M-m  
+    for y=0:N-m 
+        for s=1:m  
+            for z=1:m 
+                s1=(h(s,z)*(p(x+s,y+z)))+s1; 
+            end 
+        end 
+        N_img(x+1,y+1)=s1;
+        s1=0; 
+    end 
+end 
+subplot(1,2,1);
+imshow(img);
+title('Original Image'); 
+subplot(1,2,2);
+imshow(uint8(N_img));
+title('Image After Gaussian Filter'); 
+
