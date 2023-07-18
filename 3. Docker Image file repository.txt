@@ -1,0 +1,50 @@
+1) https://labs.play-with-docker.com/
+
+METHOD 1:
+
+2)
+
+docker -–version
+docker pull rocker/verse
+docker images
+
+3) docker hub
+
+Repository> create repository
+
+ 
+4)
+docker login -u"saniamalvi" -p"Hello@123"
+
+5)
+docker tag MENTION_IMAGE_ID saniamalvi/repo1:firsttry
+
+6)
+docker push saniamalvi/repo1:firsttry
+
+7)check on docker hub> Repositories> repo1> tags
+
+METHOD 2:
+1)
+
+1. cat > Dockerfile <<EOF
+2. FROM busybox
+3. CMD echo "Hello world! This is my first Docker image."
+4. EOF
+
+2)
+docker build -t saniamalvi/repo2 .
+
+3)
+docker images
+
+4)
+docker login -u"saniamalvi" -p"Hello@123"
+
+5)
+docker push saniamalvi/repo2
+
+6)check in docker hub> repositories
+
+7)
+docker run saniamalvi/repo2

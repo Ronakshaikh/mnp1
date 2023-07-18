@@ -1,0 +1,176 @@
+download
+https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/install
+
+1) check
+dotnet
+
+2)cmd 1
+d:
+dotnet new webapi -o Glossary
+cd Glossary
+dotnet run
+
+3)cmd 2
+curl --insecure http://localhost:5001/weatherforecast
+
+4)DELETE WeatherForecast.cs & WeatherForecastController.cs
+
+5)ADD
+
+D:\Glossary\ GlossaryItem.cs (type it in notepad and save as all files)
+
+//GlossaryItem.cs
+namespace Glossary
+{
+public class GlossaryItem
+{
+public string Term { get; set; }
+public string Definition { get; set; }
+}
+}
+
+
+
+6)
+
+D:\Glossary\Controllers\ GlossaryController.cs (type it in notepad and save as all files)
+
+
+
+//Controllers/GlossaryController.cs
+using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.IO;
+namespace Glossary.Controllers
+{
+[ApiController]
+[Route("api/[controller]")]
+public class GlossaryController: ControllerBase
+{
+private static List<GlossaryItem> Glossary = new List<GlossaryItem> {
+new GlossaryItem
+{
+Term= "HTML",
+Definition = "Hypertext Markup Language"
+},
+
+new GlossaryItem
+{
+Term= "MVC",
+Definition = "Model View Controller"
+},
+new GlossaryItem
+{
+Term= "OpenID",
+Definition = "An open standard for authentication"
+}
+};
+[HttpGet]
+public ActionResult<List<GlossaryItem>> Get()
+{ return Ok(Glossary);
+}
+[HttpGet]
+[Route("{term}")]
+public ActionResult<GlossaryItem> Get(string term)
+{
+var glossaryItem = Glossary.Find(item =>
+item.Term.Equals(term, StringComparison.InvariantCultureIgnoreCase));
+if (glossaryItem == null)
+{ return NotFound();
+} else
+{
+return Ok(glossaryItem);
+}
+}
+[HttpPost]
+public ActionResult Post(GlossaryItem glossaryItem)
+{
+var existingGlossaryItem = Glossary.Find(item =>
+item.Term.Equals(glossaryItem.Term, StringComparison.InvariantCultureIgnoreCase));
+if (existingGlossaryItem != null)
+{
+return Conflict("Cannot create the term because it already exists.");
+}
+else
+{
+Glossary.Add(glossaryItem);
+var resourceUrl = Path.Combine(Request.Path.ToString(), Uri.EscapeUriString(glossaryItem.Term));
+return Created(resourceUrl, glossaryItem);
+}
+}
+
+[HttpPut]
+public ActionResult Put(GlossaryItem glossaryItem)
+{
+var existingGlossaryItem = Glossary.Find(item =>
+item.Term.Equals(glossaryItem.Term, StringComparison.InvariantCultureIgnoreCase));
+if (existingGlossaryItem == null)
+{
+return BadRequest("Cannot update a nont existing term.");
+} else
+{
+existingGlossaryItem.Definition = glossaryItem.Definition;
+return Ok();
+}
+}
+[HttpDelete]
+[Route("{term}")]
+public ActionResult Delete(string term)
+{
+var glossaryItem = Glossary.Find(item =>
+item.Term.Equals(term, StringComparison.InvariantCultureIgnoreCase));
+if (glossaryItem == null)
+{ return NotFound();
+}
+else
+{ Glossary.Remove(glossaryItem);
+return NoContent();
+}
+}
+}
+}
+
+
+
+
+
+7) STOP Ctrl+C.
+
+8) cmd 1
+
+	dotnet run
+
+9) cmd 2
+   a) Getting a list of items:
+
+	curl --insecure http://localhost:5137/api/glossary
+
+	
+   b) Getting a single item
+
+	curl --insecure http://localhost:5137/api/glossary/MVC
+
+   c) Creating an item
+
+	curl --insecure -X POST -d "{\"term\": \"MFA\", \"definition\":\"An authentication process.\"}" -H"Content-Type:application/json" http://localhost:5137/api/glossary
+
+	curl --insecure http://localhost:5137/api/glossary
+
+   d) Update Item
+
+	curl --insecure -X PUT -d "{\"term\": \"MVC\", \"definition\":\"Modified record of Model View Controller.\"}" -H "Content-Type:application/json" http://localhost:5137/api/glossary
+	
+	curl --insecure http://localhost:5137/api/glossary
+
+   e) Delete Item
+
+	curl --insecure --request DELETE --url http://localhost:5137/api/glossary/openid
+
+	curl --insecure http://localhost:5137/api/glossary
+
+	
+	
+
+
+	

@@ -1,0 +1,67 @@
+1) .Net Core Sdk (Link: https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/install)
+2) MyMVC
+3) cmd 
+	dotnet new mvc --auth none
+
+4) modify HomeController.cs
+
+	using System;
+	using System.Collections.Generic;
+	using System.Diagnostics;
+	using System.Linq;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.Extensions.Logging;
+	using MyMVC.Models;
+	namespace MyMVC.Controllers
+	{ public class HomeController : Controller
+	{
+	public String Index()
+	{ return "Hello World"; }
+	}
+	}
+5) dotnet run
+6) stop running project using CTRL+C
+
+7) models folder and add new file StockQuote.cs
+
+	using System;
+	namespace MyMVC.Models
+	{
+	public class StockQuote
+	{ public string Symbol {get;set;}
+	public int Price{get;set;}
+	}
+	}
+
+8) views ->home folder and modify index.cshtml
+
+	@{
+	ViewData["Title"] = "Home Page";
+	}
+	<div>
+	Symbol: @Model.Symbol <br/>
+	Price: $@Model.Price <br/>
+	</div>
+9) modify HomeController.cs
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using MyMVC.Models;
+namespace MyMVC.Controllers
+{
+public class HomeController : Controller
+{ public async Task <IActionResult> Index()
+{
+var model= new StockQuote{ Symbol="HEllO", Price=3200};
+return View(model);
+}
+}
+}
+
+10)  dotnet run
